@@ -24,7 +24,7 @@ const Register = () => {
     const email = e.target.email.value;
     const password = e.target.password.value;
     console.log(password);
-    setError("");
+    setError(""); //!!!!!!!
     setSuccess("");
     if (!/^(?=.*[A-Z])/.test(password)) {
       setError("Please type atleast one uppercase letter");
@@ -108,7 +108,12 @@ const Register = () => {
           </form>
         </>
       ) : (
-        <p className="text-green-800 font-semibold mt-2 text-4xl">{success}</p>
+        <p className="text-green-800 font-semibold mt-2 text-4xl">
+          {success} Please{" "}
+          <Link to="/login" className="underline text-blue-600">
+            Login
+          </Link>
+        </p>
       )}
     </div>
   );

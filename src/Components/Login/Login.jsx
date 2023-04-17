@@ -20,6 +20,10 @@ const Login = () => {
     createOldUser(email, password)
       .then((result) => {
         const user = result.user;
+        if (!user.emailVerified) {
+          alert("Please verify your email first");
+          return;
+        }
         e.target.reset();
         setSuccess("You've logged in successfully");
         setShowText(!showText);

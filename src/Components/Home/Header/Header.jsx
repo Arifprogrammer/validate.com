@@ -63,7 +63,7 @@ const Header = () => {
             Login
           </NavLink>
         </span>
-        {user && (
+        {user?.emailVerified && (
           <>
             {" "}
             <span className="text-xl">{user.email}</span>{" "}
