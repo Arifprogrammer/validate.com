@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Button, Navbar } from "flowbite-react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import { AuthContext } from "../../../Providers/Providers";
 
 const Header = () => {
+  const { user, handleSignout } = useContext(AuthContext);
+  const handleSignoutBtn = () => {
+    handleSignout()
+      .then(() => {
+        alert("signedout successfully");
+      })
+      .catch((error) => console.log(error));
+  };
   return (
     <Navbar
       fluid={true}
@@ -13,12 +22,7 @@ const Header = () => {
         href="https://flowbite.com/"
         className="order-2 md:order-1 mx-auto md:mx-0 -translate-x-4"
       >
-        <img
-          src="https://flowbite.com/docs/images/logo.svg"
-          className="mr-3 h-6 sm:h-9"
-          alt="Flowbite Logo"
-        />
-        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
+        <span className="self-center whitespace-nowrap text-2xl font-bold font-mono dark:text-white">
           Validate.com
         </span>
       </Navbar.Brand>
@@ -26,13 +30,21 @@ const Header = () => {
         <Button className="hidden md:flex">Get started</Button>
         <Navbar.Toggle />
       </div>
-      <Navbar.Collapse className="order-3 md:order-2 bg-gray-500 md:bg-transparent text-size rounded-md text-slate-900 mt-1 pl-5 w-1/2 space-y-2 pb-4">
+      <Navbar.Collapse className="order-3 md:order-2 bg-gray-500 md:bg-transparent text-size rounded-md text-slate-900 mt-1 pl-5 w-1/2 space-y-2 pb-4 md:p-0">
         <span className="text-xl font-serif font-semibold">
           <NavLink
             to="/"
             className={({ isActive }) => isActive && "text-white "}
           >
             Home
+          </NavLink>
+        </span>
+        <span className="text-xl font-serif font-semibold">
+          <NavLink
+            to="/shop"
+            className={({ isActive }) => isActive && "text-white "}
+          >
+            Shop
           </NavLink>
         </span>
         <span className="text-xl font-serif font-semibold">
@@ -51,6 +63,19 @@ const Header = () => {
             Login
           </NavLink>
         </span>
+        {user && (
+          <>
+            {" "}
+            <span className="text-xl">{user.email}</span>{" "}
+            <Link
+              to="/"
+              className="bg-slate-800 py-1 px-4 rounded-md text-white"
+              onClick={handleSignoutBtn}
+            >
+              Signout
+            </Link>
+          </>
+        )}
       </Navbar.Collapse>
     </Navbar>
   );

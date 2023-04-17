@@ -1,26 +1,23 @@
 import { Button, Checkbox, Label, TextInput } from "flowbite-react";
 import React, { useContext, useState } from "react";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-} from "firebase/auth";
-import app from "../../Firebase/firebase.config";
+import { sendEmailVerification } from "firebase/auth";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../Providers/Providers";
 
 const Register = () => {
-  const { user } = useContext(AuthContext);
-  console.log(user);
+  const { createNewUser } = useContext(AuthContext);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [showText, setShowText] = useState(true);
-  const auth = getAuth(app);
+
+  //! send verification email process
   const sentVerification = (user) => {
     sendEmailVerification(user).then(() => {
       alert("Verification email sent to your email");
     });
   };
+
+  //! register process
   const handleNewUser = (e) => {
     e.preventDefault();
     const name = e.target.name.value;
@@ -42,7 +39,7 @@ const Register = () => {
       setError("Password shoule be at least 6 character");
       return;
     }
-    createUserWithEmailAndPassword(auth, email, password)
+    createNewUser(email, password)
       .then((result) => {
         const user = result.user;
         sentVerification(user);
@@ -52,6 +49,7 @@ const Register = () => {
       })
       .catch((error) => setError(error.message));
   };
+
   return (
     <div className="min-h-[calc(100vh-110px)] flex justify-center items-center flex-col">
       {showText ? (

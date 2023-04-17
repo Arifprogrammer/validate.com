@@ -1,26 +1,23 @@
 import { Button, Checkbox, Label, TextInput } from "flowbite-react";
-import React, { useRef, useState } from "react";
-import {
-  getAuth,
-  sendPasswordResetEmail,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import React, { useContext, useRef, useState } from "react";
 import app from "../../Firebase/firebase.config";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../Providers/Providers";
 
 const Login = () => {
+  const { createOldUser, passwordResetMail } = useContext(AuthContext);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [showText, setShowText] = useState(true);
   const emailRef = useRef();
-  const auth = getAuth(app);
+  // const auth = getAuth(app);
   const handleOldUser = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
     setError("");
     setSuccess("");
-    signInWithEmailAndPassword(auth, email, password)
+    createOldUser(email, password)
       .then((result) => {
         const user = result.user;
         e.target.reset();
@@ -32,7 +29,7 @@ const Login = () => {
   const handleResetPassword = () => {
     const refEmail = emailRef.current.value;
     if (refEmail.length > 0) {
-      sendPasswordResetEmail(auth, refEmail)
+      passwordResetMail(refEmail)
         .then(() => alert("Password reset email send to your email"))
         .catch((error) => setError(error.message));
     } else {
